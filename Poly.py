@@ -99,9 +99,9 @@ class polynomial:
     # function to find the riemann sum of a polynomial
     def riemann_sum(self, ll, ul, n, t):
         dx = (ul - ll) / n
-        rtypes = {'left': (1, slice(0, -1)), 'right': (1, slice(1, n + 1)), 'trapezoid': (2, slice(0,0))}
+        rtypes = {'left': (lambda x: 1, slice(0, -1)), 'right': (lambda x: 1, slice(1, n + 1)), 'trapezoid': (lambda x: 1 if x in (0,n) else 2, slice(0,n+1))}
         if t != 'midpoint':
-            return sum([rtypes[t][0]*self.plugin(ll + i * dx) for i in range(n + 1)][rtypes[t][1]]) * dx
+            return sum([rtypes[t][0](i)*self.plugin(ll + i * dx) for i in range(n + 1)][rtypes[t][1]]) * dx/rtypes[t][0](n+1)
         else:
             return sum([self.plugin(((ll + i * dx) + (ll + (i + 1) * dx))/2) for i in range(n + 1)]) * dx
 
@@ -115,4 +115,4 @@ class polynomial:
 
 
 p1 = polynomial([1, 1, 0, 0])
-print(p1.riemann_sum(0, 1, 100, 'right'))
+print(p1.riemann_sum(0, 1, 100, 'trapezoid'))

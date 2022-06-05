@@ -92,6 +92,9 @@ class polynomial:
     # function to find the derivative of a polynomial
     def derivative(self):
         return polynomial([self.coefs[i] * (self.degree - i) for i in range(0, self.degree)])
+    # function to find the antiderivative of a polynomial
+    def antiderivative(self):
+        return polynomial([self.coefs[i] / (self.degree - i + 1) for i in range(0, self.degree)] + [0.0])
 
     # function to find the riemann sum of a polynomial
     def riemann_sum(self, ll, ul, n):
@@ -107,5 +110,5 @@ class polynomial:
         plt.show()
 
 
-p1 = polynomial([2, 1, 2, 3])
-print(p1.riemann_sum(0,1,100))
+p1 = polynomial([1, 1, 0, 0])
+print(p1.antiderivative())

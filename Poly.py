@@ -97,9 +97,13 @@ class polynomial:
         return polynomial([self.coefs[i] / (self.degree - i + 1) for i in range(0, self.degree)] + [0.0])
 
     # function to find the riemann sum of a polynomial
-    def riemann_sum(self, ll, ul, n):
+    def riemann_sum(self, ll, ul, n, t):
         dx = (ul - ll) / n
-        return sum([self.plugin(ll + i * dx) for i in range(n)]) * dx
+        rtypes = {'left': (1, slice(0, -1)), 'right': (1, slice(1, 0)), 'trapezoid': (2, slice(0,0))}
+        if t != 'midpoint':
+            return sum([rtypes[t][0]*self.plugin(ll + i * dx) for i in range(n + 1)][rtypes[t][1]]) * dx
+        else:
+            return sum([self.plugin(((ll + i * dx) + (ll + (i + 1) * dx))/2) for i in range(n + 1)]) * dx
 
     # function to plot a polynomial
 
@@ -111,4 +115,4 @@ class polynomial:
 
 
 p1 = polynomial([1, 1, 0, 0])
-print(p1.antiderivative())
+print(p1.riemann_sum(0, 1, 100))

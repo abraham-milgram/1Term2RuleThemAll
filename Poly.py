@@ -103,7 +103,7 @@ class polynomial:
         if t != 'midpoint':
             return sum([rtypes[t][0](i)*self.plugin(ll + i * dx) for i in range(n + 1)][rtypes[t][1]]) * dx/rtypes[t][0](n+1)
         else:
-            return sum([self.plugin(((ll + i * dx) + (ll + (i + 1) * dx))/2) for i in range(n + 1)]) * dx
+            return sum([self.plugin(((ll + i * dx) + (ll + (i + 1) * dx))/2) for i in range(n)]) * dx
 
     # function to plot a polynomial
 
@@ -115,4 +115,4 @@ class polynomial:
 
 
 p1 = polynomial([1, 1, 0, 0])
-print(p1.riemann_sum(0, 1, 100, 'trapezoid'))
+print(p1.riemann_sum(0, 1, 100, 'midpoint'))

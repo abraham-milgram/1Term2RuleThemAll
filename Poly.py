@@ -106,7 +106,22 @@ class polynomial:
             return sum([rtypes[t][0](i)*self.plugin(ll + i * dx) for i in range(n + 1)][rtypes[t][1]]) * dx/rtypes[t][0](n+1)
         else:
             return sum([self.plugin(((ll + i * dx) + (ll + (i + 1) * dx))/2) for i in range(n)]) * dx
-    
+    # function to graph riemann sums
+    def graph_riemann_sum(self, ll, ul, n, t):
+        dx = (ul - ll) / n
+        height = {'right': lambda x: x + dx, 'left': lambda x: x}
+        rects = [(dx * i, self.plugin(height[t](dx * i)), dx) for i in range(n)]
+        x = [i[0] for i in rects]
+        height = [i[1] for i in rects]
+        width = [i[2] for i in rects]
+        plt.bar(x, height, width, color='r')
+        x = [i for i in range(ll, ul)]
+        y = [self.plugin(i) for i in x]
+        plt.plot(x, y)
+        plt.show()
+
+        
+
     # function to find the slope of a polynomial at a point
     def slope(self, x):
         return self.derivative().plugin(x)
@@ -133,3 +148,5 @@ class polynomial:
         plt.plot(x, y)
         plt.show()
 
+p1 = polynomial([1, 2, 3])
+p1.graph_riemann_sum(-1, 100, 10, 'left')

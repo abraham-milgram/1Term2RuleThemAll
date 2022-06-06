@@ -1,4 +1,6 @@
+from copy import deepcopy
 import matplotlib.pyplot as plt
+import math
 
 
 class polynomial:
@@ -69,7 +71,7 @@ class polynomial:
             if self.degree < divisor.degree:
                 break
 
-        return polynomial([i[0] for i in result]), self, divisor
+        return polynomial([i[0] for i in result] + [0] * result[-1][1]), self, divisor
 
     def __mod__(self, divisor):
         return (self/divisor)[1:]
@@ -113,6 +115,16 @@ class polynomial:
     def tangent(self, x):
         return polynomial([self.slope(x), self.plugin(x) - self.slope(x) * x])
 
+    # function to evaluate the sign of a number
+    def sign(self, x):
+        if x > 0:
+            return 1
+        elif x < 0:
+            return -1
+        else:
+            return 0
+
+        
     # function to plot a polynomial
 
     def plot(self, x_range):
@@ -121,6 +133,3 @@ class polynomial:
         plt.plot(x, y)
         plt.show()
 
-
-p1 = polynomial([1, 1, 0, 0])
-print(p1.tangent(2))

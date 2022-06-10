@@ -5,17 +5,18 @@ import math
 
 class polynomial:
     def __init__(self, coefs):
-        '''
-        coefs is a list of coeficients where the list position equals 
-        '''
-
+        """
+        A polynomial is defined by a list of coefficients, with the
+        highest power of the polynomial in the list at the start. For example,
+        the polynomial x^3 + 2x^2 + 3x + 4 is defined by the list [1, 2, 3, 4].
+        """
         self.coefs = coefs
         self.degree = len(coefs) - 1
         self.delete_zeros()
 
     # arithmetic operators for polynomials
-    # function to make two polynomials the same length
     def __add__(self, other):
+        # making the polynomials the same size
         polylens = sorted([self, other], key = lambda x: len(x.coefs))
         polylens[0].coefs = [0]*(len(polylens[-1].coefs) - len(polylens[0].coefs)) + polylens[0].coefs
         return polynomial([polylens[0].coefs[i]+polylens[1].coefs[i] for i in range(len(polylens[0].coefs))])

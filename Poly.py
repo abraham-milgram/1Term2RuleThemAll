@@ -14,26 +14,14 @@ class polynomial:
         self.delete_zeros()
 
     # arithmetic operators for polynomials
-
+    # function to make two polynomials the same length
     def __add__(self, other):
-        # Converts the other term to a polynomial if not already
-        if not isinstance(other, polynomial):
-            other = polynomial([other])
-        biggerPoly = self.coefs if self.degree > other.degree else other.coefs
-        smallerPoly = other.coefs if self.degree >= other.degree else self.coefs
-        for i in range(len(biggerPoly) - len(smallerPoly)):
-            smallerPoly.insert(0, 0)
-        return polynomial([biggerPoly[i]+smallerPoly[i] for i in range(len(biggerPoly))])
+        polylens = sorted([self, other], key = lambda x: len(x.coefs))
+        polylens[0].coefs = [0]*(len(polylens[-1].coefs) - len(polylens[0].coefs)) + polylens[0].coefs
+        return polynomial([polylens[0].coefs[i]+polylens[1].coefs[i] for i in range(len(polylens[0].coefs))])
 
     def __sub__(self, other):
-        # add leading zeros to other to make it the same length as self
-        if len(self.coefs) > len(other.coefs):
-            for i in range(len(self.coefs) - len(other.coefs)):
-                other.coefs.insert(0, 0)
-        elif len(self.coefs) < len(other.coefs):
-            for i in range(len(other.coefs) - len(self.coefs)):
-                self.coefs.insert(0, 0)
-        return polynomial([self.coefs[i] - other.coefs[i] for i in range(len(self.coefs))])
+        return self + (-other)
 
     def __mul__(self, other):
         result = [0 for i in range(len(self.coefs) + len(other.coefs))]
@@ -59,13 +47,12 @@ class polynomial:
 
     def __ne__(self, other):
         return not self == other
-    # function to divide a polynomial by a constant
 
     def __truediv__(self, divisor):
         result = []
         while 1:
-            result.append(
-                (self.coefs[0] / divisor.coefs[0], self.degree - divisor.degree))
+            # dividing the polynomial by the divisor using the polynomial long division method
+            result.append((self.coefs[0] / divisor.coefs[0], self.degree - divisor.degree))
             subby = divisor * polynomial([result[-1][0]] + [0] * result[-1][1])
             self = self - subby
             if self.degree < divisor.degree:
@@ -94,9 +81,19 @@ class polynomial:
     # function to find the derivative of a polynomial
     def derivative(self):
         return polynomial([self.coefs[i] * (self.degree - i) for i in range(0, self.degree)])
+    
     # function to find the antiderivative of a polynomial
     def antiderivative(self):
         return polynomial([self.coefs[i] / (self.degree - i + 1) for i in range(0, self.degree)] + [0.0])
+
+    # function to find the definite integral of a polynomial
+    def definite_integral(self, ll, ul):
+        return self.antiderivative().plugin(ul) - self.antiderivative().plugin(ll)
+
+    # function to find the indefinite integral of a polynomial
+    def indefinite_integral(self, ll, ul):
+        return self.antiderivative().plugin(ll) + self.definite_integral(ll, ul)
+    
 
     # function to find the riemann sum of a polynomial
     def riemann_sum(self, ll, ul, n, t):
@@ -115,23 +112,9 @@ class polynomial:
     def tangent(self, x):
         return polynomial([self.slope(x), self.plugin(x) - self.slope(x) * x])
 
-    # function to evaluate the sign of a number
-    def sign(self, x):
-        if x > 0:
-            return 1
-        elif x < 0:
-            return -1
-        else:
-            return 0
-
-        
     # function to plot a polynomial
-
     def plot(self, x_range):
         x = [i for i in range(x_range[0], x_range[1])]
         y = [self.plugin(i) for i in x]
         plt.plot(x, y)
         plt.show()
-
-p1 = polynomial([1, 2, 3])
-p1.graph_riemann_sum(-100, 100, 10, 'midpoint')

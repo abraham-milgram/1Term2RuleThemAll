@@ -12,15 +12,19 @@ class polynomial:
         self.delete_zeros()
 
     # arithmetic operators for polynomials
+        
+    # Adds one polynomial to an other
     def __add__(self, other):
         # making the polynomials the same size
         polylens = sorted([self, other], key = lambda x: len(x.coefs))
         polylens[0].coefs = [0]*(len(polylens[-1].coefs) - len(polylens[0].coefs)) + polylens[0].coefs
         return polynomial([polylens[0].coefs[i]+polylens[1].coefs[i] for i in range(len(polylens[0].coefs))])
 
+    # Subtracts one polynomial from an other
     def __sub__(self, other):
         return self + (-other)
 
+    # Multiplies one polynomial by a specified second polynomial
     def __mul__(self, other):
         result = [0 for i in range(len(self.coefs) + len(other.coefs))]
         for i in range(len(self.coefs)):
@@ -28,28 +32,32 @@ class polynomial:
                 result[i+j] += self.coefs[i] * other.coefs[j]
         return polynomial(result[:-1])
 
+    # Raises a function to a specified power recursively
     def __pow__(self, power):
         if power == 0:
             return polynomial([1])
         else:
             return self * (self ** (power - 1))
 
+    # Next two functions: returns a string representation of the polynomial
     def __str__(self):
         return str(self.coefs)
 
     def __repr__(self):
         return str(self.coefs)
 
+    # Logically checks if two polynomials are equal
     def __eq__(self, other):
         return self.coefs == other.coefs
 
+    # Logically checks if two polynomials are not equal
     def __ne__(self, other):
         return not self == other
 
+    # dividing the polynomial by the divisor using the polynomial long division method
     def __truediv__(self, divisor):
         result = []
         while 1:
-            # dividing the polynomial by the divisor using the polynomial long division method
             result.append((self.coefs[0] / divisor.coefs[0], self.degree - divisor.degree))
             subby = divisor * polynomial([result[-1][0]] + [0] * result[-1][1])
             self = self - subby

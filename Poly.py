@@ -1,7 +1,4 @@
-from copy import deepcopy
 import matplotlib.pyplot as plt
-import math
-
 
 class polynomial:
     def __init__(self, coefs):
@@ -90,11 +87,6 @@ class polynomial:
     # function to find the definite integral of a polynomial
     def definite_integral(self, ll, ul):
         return self.antiderivative().plugin(ul) - self.antiderivative().plugin(ll)
-
-    # function to find the indefinite integral of a polynomial
-    def indefinite_integral(self, ll, ul):
-        return self.antiderivative().plugin(ll) + self.definite_integral(ll, ul)
-    
 
     # function to find the riemann sum of a polynomial
     def riemann_sum(self, ll, ul, n, t):

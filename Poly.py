@@ -22,7 +22,7 @@ class polynomial:
 
     # Subtracts one polynomial from an other
     def __sub__(self, other):
-        return self + (-other)
+        return self + (polynomial([i * -1 for i in other.coefs]))
 
     # Multiplies one polynomial by a specified second polynomial
     def __mul__(self, other):

@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2022 Abraham Milgram
+Copyright (c) 2022 Abraham Milgram, Imran Iftikar, and Harrison Servedio
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

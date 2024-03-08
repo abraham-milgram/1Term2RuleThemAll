@@ -24,7 +24,7 @@ class polynomial:
     def __sub__(self, other):
         return self + (polynomial([i * -1 for i in other.coefs]))
 
-    # Multiplies one polynomial by a specified second polynomial
+    # Multiplies one polynomial by a specified second polynomial - does not support multiplying polynomial by scalar
     def __mul__(self, other):
         result = [0 for i in range(len(self.coefs) + len(other.coefs))]
         for i in range(len(self.coefs)):

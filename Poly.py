@@ -22,15 +22,18 @@ class polynomial:
 
     # Subtracts one polynomial from an other
     def __sub__(self, other):
-        return self + (polynomial([i * -1 for i in other.coefs]))
+        return self + other*-1
 
     # Multiplies one polynomial by a specified second polynomial - does not support multiplying polynomial by scalar
     def __mul__(self, other):
-        result = [0 for i in range(len(self.coefs) + len(other.coefs))]
-        for i in range(len(self.coefs)):
-            for j in range(len(other.coefs)):
-                result[i+j] += self.coefs[i] * other.coefs[j]
-        return polynomial(result[:-1])
+        if type(other) == polynomial:
+            result = [0 for i in range(len(self.coefs) + len(other.coefs))]
+            for i in range(len(self.coefs)):
+                for j in range(len(other.coefs)):
+                    result[i+j] += self.coefs[i] * other.coefs[j]
+            return polynomial(result[:-1])
+        elif type(other) in [float, int]:
+            return polynomial([i * other for i in self.coefs])
 
     # Raises a function to a specified power recursively
     def __pow__(self, power):
